@@ -24,13 +24,15 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> {
                     try {
                         auth
-                                .antMatchers("/user/**").authenticated()
+                                .antMatchers("/user/**").authenticated() // 인증만 되면 들어갈 수 있는 주소
                                 .antMatchers("/manager/**").hasAnyRole("MANAGER", "ADMIN")
                                 .antMatchers("/admin/**").hasAnyRole("ADMIN")
                                 .anyRequest().permitAll()
                                 .and()
                                 .formLogin()
-                                .loginPage("/loginForm");
+                                .loginPage("/loginForm")
+                                .loginProcessingUrl("/login") // /login주가 호출이 되면 시큐리티가 낚아채 대신 로그인 진행
+                                .defaultSuccessUrl("/");
                     } catch (Exception e) {
                         throw new RuntimeException(e);
                     }
