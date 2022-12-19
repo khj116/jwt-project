@@ -1,6 +1,8 @@
 package com.cos.security1.security1.model;
 
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.Entity;
@@ -11,6 +13,7 @@ import java.time.LocalDateTime;
 
 @Data
 @Entity
+@NoArgsConstructor
 public class User {
 
     @Id
@@ -28,4 +31,19 @@ public class User {
     @CreatedDate
     private LocalDateTime createDate;
 
+    private String provider;
+
+    private String providerId;
+
+    @Builder
+    public User(long id, String username, String password, String email, String role, LocalDateTime createDate, String provider, String providerId) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.role = role;
+        this.createDate = createDate;
+        this.provider = provider;
+        this.providerId = providerId;
+    }
 }

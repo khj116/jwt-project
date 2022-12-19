@@ -1,0 +1,3 @@
+구글 API 콘솔
+https://console.cloud.google.com/getting-started?supportedpurview=project&authuser=1
+

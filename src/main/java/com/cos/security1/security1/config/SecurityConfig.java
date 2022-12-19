@@ -1,5 +1,7 @@
 package com.cos.security1.security1.config;
 
+import com.cos.security1.security1.oauth.PrincipalOauth2UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -13,12 +15,10 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true) // Secured 어노테이션 활성화 / preAuthorize + postAuthorize 어노테이션 활성화
 public class SecurityConfig {
 
-    // 해당 메소드의 리턴되는 오브젝트를 IOC로 등록해줌
-    @Bean
-    public BCryptPasswordEncoder encodePwd(){
-        return new BCryptPasswordEncoder();
-    }
+    @Autowired
+    private PrincipalOauth2UserService principalOauth2UserService;
 
+    
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
@@ -33,8 +33,13 @@ public class SecurityConfig {
                                 .and()
                                 .formLogin()
                                 .loginPage("/loginForm")
-                                .loginProcessingUrl("/login") // /login주가 호출이 되면 시큐리티가 낚아채 대신 로그인 진행
-                                .defaultSuccessUrl("/");
+                                .loginProcessingUrl("/login") // /login주소가 호출이 되면 시큐리티가 낚아채 대신 로그인 진행
+                                .defaultSuccessUrl("/")
+                                .and()
+                                .oauth2Login()
+                                .loginPage("/loginForm") // 1.코드받기(인증) 2.엑세스 토큰(권한) 3. 사용자 프로필 가져옴 4.그정도를 토대로 회원가입 자동으로 시키기
+                                .userInfoEndpoint()
+                                .userService(principalOauth2UserService);
                     } catch (Exception e) {
                         throw new RuntimeException(e);
                     }
