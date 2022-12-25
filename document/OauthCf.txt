@@ -1,3 +1,5 @@
 구글 API 콘솔
 https://console.cloud.google.com/getting-started?supportedpurview=project&authuser=1
 
+네이버 API 콘솔
+https://developers.naver.com/main/
